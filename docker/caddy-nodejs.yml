@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  proxy:
+    image: caddy:latest
+    container_name: caddy_proxy_nodejs
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/caddy-nodejs.caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - caddy_nodejs_net
+
+  backend:
+    build: ../backend # Path to backend folder from the docker-compose file
+    image: nodejs_custom_latest_build
+    container_name: nodejs_webserver_latest
+    ports:
+      - "8081:3000"
+    networks:
+      - caddy_nodejs_net
+
+networks:
+  caddy_nodejs_net:
+    driver: bridge

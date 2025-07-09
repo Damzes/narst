@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  proxy:
+    image: traefik:latest
+    container_name: traefik_proxy_apache-http-server # Name matches hyphenated style
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik_apache_http_server_net
+
+  backend:
+    image: httpd:latest
+    container_name: apache-http-server_webserver_latest # Name matches hyphenated style
+    ports:
+      - "8081:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.apache-http-server.rule=Host(`localhost`)" # Label must match the normalized name for Traefik
+      - "traefik.http.routers.apache-http-server.entrypoints=web"
+      - "traefik.http.services.apache-http-server.loadbalancer.server.port=80"
+    networks:
+      - traefik_apache_http_server_net
+
+networks:
+  traefik_apache_http_server_net:
+    driver: bridge

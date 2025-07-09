@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  proxy:
+    image: nginx:latest
+    container_name: nginx_proxy_nodejs
+    ports:
+      - "8080:80" # Nginx (proxy) listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/nginx-nodejs.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - nginx_nodejs_net
+
+  backend:
+    build: ./backend # Builds from the backend directory
+    image: nodejs_custom_latest_build # A name for your custom image
+    container_name: nodejs_webserver_latest
+    ports:
+      - "8081:3000" # Node.js listens on 3000 internally, exposed on host 8081
+    networks:
+      - nginx_nodejs_net
+
+networks:
+  nginx_nodejs_net:
+    driver: bridge

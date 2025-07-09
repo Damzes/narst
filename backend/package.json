@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-backend-for-traefik",
+  "version": "1.0.0",
+  "description": "A minimal Node.js HTTP server for Traefik proxy testing",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

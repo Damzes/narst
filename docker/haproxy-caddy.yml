@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: haproxy:latest
+    container_name: haproxy_proxy_caddy
+    ports:
+      - "8080:80" # HAProxy listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/haproxy-caddy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - haproxy_caddy_net
+
+  backend:
+    image: caddy:latest # Official Caddy image
+    container_name: caddy_webserver_latest
+    ports:
+      - "8081:80" # Caddy listens on 80 internally, exposed on host 8081
+    networks:
+      - haproxy_caddy_net
+
+networks:
+  haproxy_caddy_net:
+    driver: bridge

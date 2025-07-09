@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  proxy:
+    image: varnish:latest
+    container_name: varnish_proxy_apache-http-server # Name matches hyphenated style
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/varnish-apache-http-server.vcl:/etc/varnish/default.vcl:ro
+    command: ["varnishd", "-F", "-f", "/etc/varnish/default.vcl", "-s", "malloc,256m"]
+    networks:
+      - varnish_apache_http_server_net
+
+  backend:
+    image: httpd:latest
+    container_name: apache-http-server_webserver_latest # Name matches hyphenated style
+    ports:
+      - "8081:80"
+    networks:
+      - varnish_apache_http_server_net
+
+networks:
+  varnish_apache_http_server_net:
+    driver: bridge

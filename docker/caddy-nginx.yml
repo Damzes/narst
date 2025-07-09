@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: caddy:latest
+    container_name: caddy_proxy_nginx
+    ports:
+      - "8080:80" # Caddy (proxy) listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/Caddyfile-nginx:/etc/caddy/Caddyfile:ro
+    networks:
+      - caddy_nginx_net
+
+  backend:
+    image: nginx:latest # Official Nginx image
+    container_name: nginx_webserver_latest
+    ports:
+      - "8081:80" # Nginx listens on 80 internally, exposed on host 8081
+    networks:
+      - caddy_nginx_net
+
+networks:
+  caddy_nginx_net:
+    driver: bridge

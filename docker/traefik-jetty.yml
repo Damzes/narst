@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  proxy:
+    image: traefik:latest
+    container_name: traefik_proxy_jetty
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - smuggling_latest_net
+
+  webserver:
+    image: jetty:latest # Official Jetty image
+    container_name: jetty_webserver_latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jetty.rule=Host(`localhost`)"
+      - "traefik.http.routers.jetty.entrypoints=web"
+      - "traefik.http.services.jetty.loadbalancer.server.port=8080" # Jetty typically listens on 8080
+    networks:
+      - smuggling_latest_net
+
+networks:
+  smuggling_latest_net:
+    driver: bridge

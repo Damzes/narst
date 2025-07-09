@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  proxy:
+    image: traefik:latest
+    container_name: traefik_proxy_nodejs
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - smuggling_latest_net
+
+  webserver:
+    build: ./backend # Builds from the backend directory
+    image: nodejs_custom_latest_build # A name for your custom image
+    container_name: nodejs_webserver_latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nodejs.rule=Host(`localhost`)"
+      - "traefik.http.routers.nodejs.entrypoints=web"
+      - "traefik.http.services.nodejs.loadbalancer.server.port=3000" # Assumes Node.js app listens on 3000
+    networks:
+      - smuggling_latest_net
+
+networks:
+  smuggling_latest_net:
+    driver: bridge

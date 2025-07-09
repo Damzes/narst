@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  proxy:
+    image: traefik:latest
+    container_name: traefik_proxy_nginx
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - smuggling_latest_net
+
+  webserver:
+    image: nginx:latest # Official Nginx image
+    container_name: nginx_webserver_latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`localhost`)"
+      - "traefik.http.routers.nginx.entrypoints=web"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80" # Nginx listens on 80 by default
+    networks:
+      - smuggling_latest_net
+
+networks:
+  smuggling_latest_net:
+    driver: bridge

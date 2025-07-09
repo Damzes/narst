@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  proxy:
+    image: traefik:latest
+    container_name: traefik_proxy_openlitespeed
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - smuggling_latest_net
+
+  webserver:
+    image: litespeedtech/openlitespeed:latest # Official OpenLiteSpeed image
+    container_name: openlitespeed_webserver_latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openlitespeed.rule=Host(`localhost`)"
+      - "traefik.http.routers.openlitespeed.entrypoints=web"
+      - "traefik.http.services.openlitespeed.loadbalancer.server.port=8088" # OLS often defaults to 8088 for its web server
+    networks:
+      - smuggling_latest_net
+
+networks:
+  smuggling_latest_net:
+    driver: bridge

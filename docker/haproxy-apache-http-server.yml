@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  proxy:
+    image: haproxy:latest
+    container_name: haproxy_proxy_apache_http_server # Consistent with hyphenated webserver name
+    ports:
+      - "8080:80" # HAProxy listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      # This mount path must match the name of the .cfg file you create below
+      - ./proxy-configs/haproxy-apache-http-server.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - haproxy_apache_http_server_net # Consistent with hyphenated webserver name
+
+  backend:
+    image: httpd:latest # Official Apache HTTP Server image
+    container_name: apache_http_server_webserver_latest # Consistent with hyphenated webserver name
+    ports:
+      - "8081:80" # Apache listens on 80 internally, exposed on host 8081
+    networks:
+      - haproxy_apache_http_server_net
+
+networks:
+  haproxy_apache_http_server_net:
+    driver: bridge

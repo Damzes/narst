@@ -1,0 +1,18 @@
+{
+  "proxies": [
+    "haproxy",
+    "nginx",
+    "caddy",
+    "varnish",
+    "traefik"
+  ],
+  "web_servers": [
+    "apache-http-server",
+    "nginx",
+    "nodejs",
+    "openlitespeed",
+    "caddy",
+    "tomcat",
+    "jetty"
+  ]
+}

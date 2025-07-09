@@ -1,0 +1,7 @@
+:80 {
+    reverse_proxy http://backend:80
+    log {
+        output stdout
+        format json
+    }
+}

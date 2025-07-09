@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: caddy:latest
+    container_name: caddy_proxy_openlitespeed
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/caddy-openlitespeed.caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - caddy_ols_net
+
+  backend:
+    image: litespeedtech/openlitespeed:latest
+    container_name: openlitespeed_webserver_latest
+    ports:
+      - "8081:8088"
+    networks:
+      - caddy_ols_net
+
+networks:
+  caddy_ols_net:
+    driver: bridge

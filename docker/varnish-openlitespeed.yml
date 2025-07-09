@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  proxy:
+    image: varnish:latest
+    container_name: varnish_proxy_openlitespeed
+    ports:
+      - "8080:80" # Varnish listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      # FIX: Correct VCL filename and standard mount path
+      - ./proxy-configs/varnish-openlitespeed.vcl:/etc/varnish/default.vcl:ro
+    command: ["varnishd", "-F", "-f", "/etc/varnish/default.vcl", "-s", "malloc,256m"] # Command to load VCL
+    networks:
+      - varnish_ols_net
+
+  backend:
+    image: litespeedtech/openlitespeed:latest
+    container_name: openlitespeed_webserver_latest
+    ports:
+      - "8081:8088" # OLS listens on 8088 internally, exposed on host 8081
+    networks:
+      - varnish_ols_net
+
+networks:
+  varnish_ols_net:
+    driver: bridge

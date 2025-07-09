@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  proxy:
+    image: varnish:latest
+    container_name: varnish_proxy_jetty
+    ports:
+      - "8080:80" # Varnish listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      # FIX: Added volumes mount, correct VCL filename and standard path
+      - ./proxy-configs/varnish-jetty.vcl:/etc/varnish/default.vcl:ro
+    command: ["varnishd", "-F", "-f", "/etc/varnish/default.vcl", "-s", "malloc,256m"] # Command to load VCL
+    networks:
+      - varnish_jetty_net
+
+  backend:
+    image: jetty:latest
+    container_name: jetty_webserver_latest
+    ports:
+      - "8081:8080" # Jetty listens on 8080 internally, exposed on host 8081
+    networks:
+      - varnish_jetty_net
+
+networks:
+  varnish_jetty_net:
+    driver: bridge

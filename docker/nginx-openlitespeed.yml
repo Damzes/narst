@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: nginx:latest
+    container_name: nginx_proxy_openlitespeed
+    ports:
+      - "8080:80" # Nginx (proxy) listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/nginx-openlitespeed.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - nginx_ols_net
+
+  backend:
+    image: litespeedtech/openlitespeed:latest # Official OpenLiteSpeed image
+    container_name: openlitespeed_webserver_latest
+    ports:
+      - "8081:8088" # OLS listens on 8088 internally, exposed on host 8081
+    networks:
+      - nginx_ols_net
+
+networks:
+  nginx_ols_net:
+    driver: bridge

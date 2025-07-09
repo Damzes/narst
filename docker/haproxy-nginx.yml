@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  proxy:
+    image: haproxy:latest
+    container_name: haproxy_proxy_nginx
+    ports:
+      - "8080:80" # HAProxy listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/haproxy-nginx.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro # Relative path adjusted
+    networks:
+      - haproxy_nginx_net
+
+  backend:
+    
+    image: nginx:latest
+    container_name: nginx_webserver_latest
+    ports:
+      - "8081:80" # Backend direct access for testing/comparison
+    networks:
+      - haproxy_nginx_net
+
+networks:
+  haproxy_nginx_net:
+    driver: bridge

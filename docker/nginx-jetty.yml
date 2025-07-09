@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  proxy:
+    image: nginx:latest
+    container_name: nginx_proxy_jetty
+    ports:
+      - "8080:80" # Nginx (proxy) listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      # CRITICAL FIX: Added the volumes mount for nginx.conf
+      - ./proxy-configs/nginx-jetty.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - nginx_jetty_net
+
+  backend:
+    image: jetty:latest # Official Jetty image
+    container_name: jetty_webserver_latest
+    ports:
+      - "8081:8080" # Jetty listens on 8080 internally, exposed on host 8081
+    networks:
+      - nginx_jetty_net
+
+networks:
+  nginx_jetty_net:
+    driver: bridge

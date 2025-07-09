@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: nginx:latest
+    container_name: nginx_proxy_apache-http-server # Name matches hyphenated style
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/nginx-apache-http-server.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - nginx_apache_http_server_net
+
+  backend:
+    image: httpd:latest
+    container_name: apache-http-server_webserver_latest # Name matches hyphenated style
+    ports:
+      - "8081:80"
+    networks:
+      - nginx_apache_http_server_net
+
+networks:
+  nginx_apache_http_server_net:
+    driver: bridge

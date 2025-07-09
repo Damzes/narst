@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  proxy:
+    image: nginx:latest
+    container_name: nginx_proxy_nginx
+    ports:
+      - "8080:80" # Nginx (proxy) listens on 80 internally, exposed on host 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./proxy-configs/nginx-nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - nginx_nginx_net
+
+  backend:
+    image: nginx:latest # Official Nginx image as backend
+    container_name: nginx_webserver_latest
+    ports:
+      - "8081:80" # Nginx backend listens on 80 internally, exposed on host 8081
+    networks:
+      - nginx_nginx_net
+
+networks:
+  nginx_nginx_net:
+    driver: bridge

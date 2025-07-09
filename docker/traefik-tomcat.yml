@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  proxy:
+    image: traefik:latest
+    container_name: traefik_proxy_tomcat
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - smuggling_latest_net
+
+  webserver:
+    image: tomcat:latest # Official Tomcat image
+    container_name: tomcat_webserver_latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tomcat.rule=Host(`localhost`)"
+      - "traefik.http.routers.tomcat.entrypoints=web"
+      - "traefik.http.services.tomcat.loadbalancer.server.port=8080" # Tomcat typically listens on 8080
+    networks:
+      - smuggling_latest_net
+
+networks:
+  smuggling_latest_net:
+    driver: bridge
